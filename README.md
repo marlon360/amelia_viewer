@@ -1,7 +1,18 @@
 # Amelia Viewer by Jake Kenin
 
-This is a fork of Jake Kenin's code to display LiveView video from the RICOH THETA V.  I've added Electron Forge to be able to build binaries
+
+This is a fork of Jake Kenin's code to display LiveView video from the RICOH THETA V.  
+
+![full](docs/images/screenshot.jpeg)
+
+Binaries are available for Windows and Linux in the 
+[releases](https://github.com/codetricity/amelia_viewer/releases) section.
+
+
+I've added Electron Forge to be able to build binaries
 for different platforms.
+
+![controls](docs/images/screen-control.png)
 
 ---
 
