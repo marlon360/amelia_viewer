@@ -1,7 +1,9 @@
 const path = require('path')
 const url = require('url')
 const nodeConsole = require('console')
-const { app, BrowserWindow } = require('electron')
+const settings = require('electron-settings');
+const { app, BrowserWindow, ipcMain } = require('electron')
+const fs = require("fs");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -15,7 +17,7 @@ const liveServer = require("live-server")
 let myPath = path.resolve(__dirname, '.');
 const liveServerParams = {
     port: 8181, // Set the server port. Defaults to 8080.
-    host: "0.0.0.0", // Set the address to bind to. Defaults to 0.0.0.0 or process.env.IP.
+    host: "127.0.0.1", // Set the address to bind to. Defaults to 0.0.0.0 or process.env.IP.
     root: myPath, // Set root directory that's being served. Defaults to cwd.
     open: false, // When false, it won't load your browser by default.
     ignore: 'scss,my/templates', // comma-separated string for paths to ignore
@@ -32,7 +34,7 @@ liveServer.start(liveServerParams);
 // Setup a reverse proxy to avoid CORS issues
 // ============================================================================
 // Listen on a specific host via the HOST environment variable
-var host = process.env.HOST || '0.0.0.0';
+var host = process.env.HOST || '127.0.0.1';
 // Listen on a specific port via the PORT environment variable
 var port = process.env.PORT || 8080;
 
@@ -58,15 +60,14 @@ function createWindow () {
   // Run as a single instance app
   makeSingleInstance()
 
-  // Enable dev tools
-  win.webContents.openDevTools()
-
-  // and load the index.html of the app.
+  // if we ever go back to electron based UI uncomment below
+  /* and load the index.html of the app.
   win.loadURL(url.format({
     pathname: "localhost:8181",
     protocol: 'http:',
     slashes: true
-  }))
+  }))*/
+  win.loadFile('empty_index.html')
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -80,7 +81,22 @@ function createWindow () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', ()=> {
+    // Load the application settings
+    try {
+        var settingsFileContent = fs.readFileSync(
+            path.join(__dirname, 'settings.json'))
+        console.log("Loaded the following settings from 'settings.json': \n" + 
+        settingsFileContent)
+        settings.setAll(JSON.parse(settingsFileContent)) 
+    } catch(err) {
+        console.log("Failed to parse 'settings.json': " + err)
+        app.quit() // TODO: use default values and print error in app
+    }
+
+    // Create the main window
+    createWindow()
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -91,13 +107,12 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow()
-  }
-})
+// Be sure to save the settings on closing the application
+app.on('quit', () => {
+    console.log("Saving settings to 'settings.json'")
+    var settingsString = JSON.stringify(settings.getAll(), null, 4)
+    fs.writeFileSync(path.join(__dirname, 'settings.json'), settingsString)
+});
 
 // Make this a single instance application, so you don't open another instance
 // when you try to launch the application while it is already running

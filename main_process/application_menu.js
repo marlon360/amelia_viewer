@@ -5,17 +5,46 @@ let myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 const {BrowserWindow, Menu, app, shell, dialog} = require('electron')
 
 // Template used for crossplatform compatible system menus
+/* for if we ever go back to just electron based
+ let template = [{
+    label: 'Application',
+    submenu: [{
+        label: 'Toggle Dev Tools',
+        click: (item, focusedWindow) => {
+            if(focusedWindow) {
+                focusedWindow.toggleDevTools()
+            }
+        }
+    }, {
+        label: 'Quit',
+        click: () => {
+            app.quit()
+        }
+    }]
+}, {
+    label: 'Settings',
+    click: (item, focusedWindow) => {
+        let child = new BrowserWindow({parent: focusedWindow, 
+            frame: false, resizable: false, modal: true, show: false})
+        child.loadFile('html/settings.html')
+        child.once('ready-to-show', () => {
+            child.show()
+        })
+    }
+}]*/
 let template = [{
     label: 'Application',
     submenu: [{
-        label: 'Settings',
+        label: 'Toggle Dev Tools',
         click: (item, focusedWindow) => {
-            let child = new BrowserWindow({parent: focusedWindow, 
-                frame: false, resizable: false, modal: true, show: false})
-            child.loadFile('html/settings.html')
-            child.once('ready-to-show', () => {
-                child.show()
-            })
+            if(focusedWindow) {
+                focusedWindow.toggleDevTools()
+            }
+        }
+    }, {
+        label: 'Quit',
+        click: () => {
+            app.quit()
         }
     }]
 }]
