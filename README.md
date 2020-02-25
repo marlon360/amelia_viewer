@@ -1,3 +1,10 @@
+# Amelia Viewer by Jake Kenin
+
+This is a fork of Jake Kenin's code to display LiveView video from the RICOH THETA V.  I've added Electron Forge to be able to build binaries
+for different platforms.
+
+---
+
 Native app for viewing a 360 livestream from the Ricoh Theta in a VR headset
 
 Built using:

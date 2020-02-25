@@ -4,8 +4,10 @@
   "description": "A VR viewer for the Ricoh Theta, built for RIT's MSD P19123.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "proxy": "lcp --proxyUrl http://192.168.50.227"
+    "start": "electron-forge start",
+    "proxy": "lcp --proxyUrl http://192.168.50.227",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "author": "Jacob Kenin",
   "license": "ISC",
@@ -13,14 +15,47 @@
     "concurrently": "^4.1.0",
     "cors-anywhere": "^0.4.1",
     "electron-settings": "^3.2.0",
+    "electron-squirrel-startup": "^1.0.0",
     "live-server": "^1.2.1",
     "local-cors-proxy": "^1.0.2"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.49",
+    "@electron-forge/maker-deb": "^6.0.0-beta.49",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.49",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.49",
+    "@electron-forge/maker-zip": "^6.0.0-beta.49",
     "electron": "^4.0.6"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/dirtshell/amelia_viewer"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "amelia_viewer"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }
