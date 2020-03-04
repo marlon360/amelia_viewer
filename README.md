@@ -65,3 +65,19 @@ There is another example of parsing an mjpeg stream from an IP camera here:
 https://stackoverflow.com/questions/21702477/how-to-parse-mjpeg-http-stream-from-ip-camera
 
 
+## Video Showing Demo and Installation from Source Code
+
+See this video for installation and usage demo.
+
+https://www.youtube.com/watch?v=On8qS_6eM7Y
+
+## Wi-Fi Connection Options
+
+You can connect to the THETA in access point mode or client mode.  If your THETA connects
+to your home or office router, you must use digest authentication.
+
+See this link for RICOH THETA digest mode information.
+
+https://community.theta360.guide/t/tip-developing-theta-client-mode-applications/2450
+
+There are many examples of how to connect and authenticate.
